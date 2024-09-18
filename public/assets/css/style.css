@@ -1,0 +1,253 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background: linear-gradient(90deg,
+            rgb(184, 237, 245) 0%,
+            rgb(141, 237, 234) 35%,
+            rgba(0, 212, 255, 1) 100%);
+    backdrop-filter: blur(10px);
+    min-height: 100vh;
+
+}
+
+.side-bar {
+    position: fixed;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background-color: #F5F5F5;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid #E1E8ED;
+    padding: 20px 0;
+}
+
+.side-bar .logo {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.side-bar .logo img {
+    width: 50%;
+}
+
+.side-bar .menu {
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+}
+
+.side-bar .menu ul {
+    list-style: none;
+    width: 100%;
+}
+
+.side-bar .menu ul li {
+    width: 90%;
+    margin-bottom: 20px;
+}
+
+
+.side-bar .menu ul li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #1DA1F2;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 25px;
+    transition: background-color 0.3s;
+}
+
+.side-bar .menu ul li a.active {
+    background-color: rgba(29, 161, 242, 0.1);
+}
+
+.side-bar .menu ul li a:hover {
+    background-color: rgba(29, 161, 242, 0.1);
+}
+
+.side-bar .menu ul li a i {
+    margin-right: 15px;
+}
+
+.bottom-sidebar {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.bottom-sidebar .user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.bottom-sidebar .username {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.bottom-sidebar .user-title {
+    font-size: 14px;
+    color: gray;
+}
+
+.btn {
+    width: 95%;
+    background-color: #1DA1F2;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(29, 161, 242, 0.8);
+    }
+
+    &:active {
+        background-color: rgba(29, 161, 242, 1);
+    }
+}
+
+
+.main-content {
+    margin-left: 280px;
+    padding: 20px;
+    height: 100vh;
+    background-color: #F5F5F5;
+
+    &::-webkit-scrollbar-track {
+        background-color: #F5F5F5;
+    }
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+.post-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 60em;
+    margin-bottom: 20px; 
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #E1E8ED;
+    backdrop-filter: blur(10px);
+    background-color: #F5F5F5;
+    width: 50vh;
+    border-radius: 5px;
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #E1E8ED;
+        border-radius: 5px;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .actions button {
+        margin-left: 10px;
+    }
+
+    .actions button:hover {
+        background-color: rgba(29, 161, 242, 0.1);
+    }
+
+    .actions button:active {
+        background-color: rgba(29, 161, 242, 1);
+    }
+
+   
+}
+
+.first-tweet-spacer {
+    height: 130px;
+}
+
+#tweetsContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#tweetsContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.tweet {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding: 20px;
+    min-width: 300px;
+    max-width: 600px;
+    border: 1px solid #E1E8ED;
+    border-radius: 5px;
+    background-color: white;
+
+    .tweet-mains {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    h3 {
+        font-size: 16px;
+        color: #1DA1F2;
+    }
+
+    .user-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .right {
+        margin-left: 10px;
+    }
+
+    .bottom {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .bottom i {
+        margin-right: 10px;
+        cursor: pointer;
+
+        &:hover {
+            color: #1DA1F2;
+        }
+    }
+}
+
+.tweet.liked i[class="fa fa-heart"] {
+    color: red;
+}

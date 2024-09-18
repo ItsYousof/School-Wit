@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Wit</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/script.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" href="assets/images/logo.webp">
+</head>
+
+<body>
+    <main id="app">
+        <div class="side-bar">
+            <div class="logo">
+                <img src="assets/images/logo.webp" alt="logo">
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a href="#" class="active"><i class="fa fa-home"></i> Home</a></li>
+                    
+                    <button id="post_btn" class="btn" onclick="document.getElementById('tweetInput').focus();">Post</button>
+                </ul>
+            </div>
+
+            <div class="bottom-sidebar">
+                <div class="left-side">
+                    <img class="user-avatar" src="assets/images/user-avater.png" alt="user avatar">
+                </div>
+                <div class="right-side">
+                    <p class="username" id="user">Username</p>
+                    <p class="user-title" id="title">@User</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="post-box">
+                <input type="text" id="tweetInput" placeholder="What is happening?!" />
+                <div class="actions">
+                    <button id="postTweetBtn" class="btn" >Post</button>
+                </div>
+            </div>
+            <div id="tweetsContainer" class="tweets"><div class="first-tweet-spacer"></div></div>
+        </div>
+    </main>
+</body>
+
+</html>
