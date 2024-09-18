@@ -74,3 +74,17 @@ async function loadTweets() {
 
 
 loadTweets();
+
+let devtools = function() {};
+devtools.toString = function() {
+    alert("DevTools detected. Please close them.");
+    window.close();
+};
+console.log("%c", devtools);
+document.addEventListener('contextmenu', event => event.preventDefault());
+document.onkeydown = function(e) {
+    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
+        e.preventDefault();
+    }
+};
+
