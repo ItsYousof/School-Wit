@@ -51,7 +51,6 @@ app.get('/users', async (req, res) => {
     const users = await loadUsers();
     res.json(users);
 });
-
 app.post('/send_message', (req, res) => {
     const { sender, recipient, text } = req.body;
     sendMessageToConversation(sender, recipient, text);

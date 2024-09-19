@@ -53,19 +53,25 @@ function addSideUser(username) {
         loadMessages(currentUser, username); // Load messages between current user and selected user
     });
 }
-
 async function loadMessages(user1, user2) {
-    const response = await fetch(`/messages/${user1}/${user2}`);
-    const messages = await response.json();
+    try {
+        const response = await fetch(`/messages/${user1}/${user2}`);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const messages = await response.json();
+        const messagesContainer = document.getElementById('messagesContainer');
+        messagesContainer.innerHTML = ''; // Clear old messages
 
-    const messagesContainer = document.getElementById('messagesContainer');
-    messagesContainer.innerHTML = ''; // Clear old messages
-
-    for (const message of messages) {
-        let messageElement = document.createElement('div');
-        messageElement.classList.add('message');
-        messageElement.textContent = `${message.sender}: ${message.text}`;
-        messagesContainer.appendChild(messageElement);
+        for (const message of messages) {
+            let messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.textContent = `${message.sender}: ${message.text}`;
+            messagesContainer.appendChild(messageElement);
+        }
+    } catch (error) {
+        console.error('Error loading messages:', error);
+        // Handle errors such as showing a message to the user
     }
 }
 
