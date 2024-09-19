@@ -51,11 +51,27 @@ app.get('/users', async (req, res) => {
     const users = await loadUsers();
     res.json(users);
 });
-app.post('/send_message', (req, res) => {
+
+app.get('/messages/:chatNames', async (req, res) => {
+    const chatNames = req.params.chatNames;
+    const messagesRef = ref(db, `chats/${chatNames}`);
+    const snapshot = await get(messagesRef);
+    const messages = [];
+    snapshot.forEach((childSnapshot) => {
+        messages.push(childSnapshot.val());
+    });
+    res.json(messages);
+});
+
+app.post('/send_message', async (req, res) => {
     const { sender, recipient, text } = req.body;
-    sendMessageToConversation(sender, recipient, text);
+    const chatNames = [sender, recipient].sort().join('_');
+    const messagesRef = ref(db, `chats/${chatNames}`);
+    const newMessageRef = push(messagesRef);
+    await set(newMessageRef, { sender, text, timestamp: Date.now() });
     res.sendStatus(200);
 });
+
 
 app.get('/messages/:user1/:user2', async (req, res) => {
     const { user1, user2 } = req.params;
