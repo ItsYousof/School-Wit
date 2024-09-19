@@ -44,6 +44,8 @@ function addTweet(text, username) {
     document.getElementById('tweetsContainer').appendChild(tweet);
 }
 
+
+
 function postTweet(username, text) { 
     addTweet(text, username);
     document.getElementById('tweetInput').value = '';
@@ -61,7 +63,32 @@ function postTweet(username, text) {
 }
 
 document.getElementById('postTweetBtn').addEventListener('click', () => {
-    postTweet(localStorage.getItem('username'), document.getElementById('tweetInput').value);
+    if (document.getElementById('tweetInput').value === '') {
+        return;
+    }
+    let badwords = ['fuck', 'shit', 'bitch', 'asshole', 'ass'];
+    let filteredText = document.getElementById('tweetInput').value;
+    for (let i = 0; i < badwords.length; i++) {
+        if (filteredText.includes(badwords[i])) {
+            alert('Please do not use bad words.');
+            return;
+        } else {
+            postTweet(localStorage.getItem('username'), document.getElementById('tweetInput').value);
+            return;
+        }
+    }
+    if (filteredText.includes('https://')) {
+        alert('Please do not include links.');
+        return;
+    } else {
+        postTweet(localStorage.getItem('username'), document.getElementById('tweetInput').value);
+        return;
+    }
+    // add a cooldown of 5 seconds before posting again
+    document.getElementById('tweetInput').readOnly = true;
+    setTimeout(() => {
+        document.getElementById('tweetInput').readOnly = false;
+    }, 5000);
 });
 
 async function loadTweets() {
@@ -74,17 +101,3 @@ async function loadTweets() {
 
 
 loadTweets();
-
-let devtools = function() {};
-devtools.toString = function() {
-    alert("DevTools detected. Please close them.");
-    window.close();
-};
-console.log("%c", devtools);
-document.addEventListener('contextmenu', event => event.preventDefault());
-document.onkeydown = function(e) {
-    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
-        e.preventDefault();
-    }
-};
-

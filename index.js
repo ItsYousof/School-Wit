@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set, push, get } from 'firebase/database';
+import { getDatabase, ref, set, push, get, update } from 'firebase/database';
 import bodyParser from 'body-parser';  // Add this import
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 import multer from 'multer';
@@ -47,6 +47,57 @@ app.get('/tweets', async (req, res) => {
     res.json(tweets);
 });
 
+app.get('/users', async (req, res) => { 
+    const users = await loadUsers();
+    res.json(users);
+});
+
+// Store and load messages
+app.post('/send_message', (req, res) => {
+    const { sender, recipient, text } = req.body;
+    sendMessageToUser(sender, recipient, text);
+    res.sendStatus(200);
+});
+
+app.get('/messages/:username', async (req, res) => {
+    const username = req.params.username;
+    const messages = await loadMessages(username);
+    res.json(messages);
+});
+
+function sendMessageToUser(sender, recipient, text) {
+    const messagesRef = ref(db, `messages/${recipient}`);
+    const newMessageRef = push(messagesRef);
+    set(newMessageRef, {
+        sender: sender,
+        text: text,
+        timestamp: Date.now()
+    });
+}
+
+async function loadMessages(username) {
+    const messagesRef = ref(db, `messages/${username}`);
+    const snapshot = await get(messagesRef);
+    const messages = [];
+    snapshot.forEach((childSnapshot) => {
+        messages.push(childSnapshot.val());
+    });
+    return messages;
+}
+
+
+async function loadUsers() {
+    const usersRef = ref(db, 'users');
+    const snapshot = await get(usersRef);
+    const users = [];
+    snapshot.forEach((childSnapshot) => {
+        const user = childSnapshot.val();
+        users.push(user);
+    });
+    return users;
+}
+
+
 async function loadTweets() {
     const tweetsRef = ref(db, 'tweets');
     const snapshot = await get(tweetsRef);
@@ -75,20 +126,36 @@ function addUser(username) {
 
 
 function postTweet(username, text) {
-    const tweetsRef = ref(db, 'tweets');
-    const newTweetRef = push(tweetsRef);
-    set(newTweetRef, {
+    // Get the first word of the tweet
+    const firstWord = text.split(' ')[0];
+    const sanitizedFirstWord = firstWord.replace(/[^a-zA-Z0-9]/g, ''); // Remove special characters
+    const timestamp = Date.now(); // To ensure uniqueness
+    const tweetId = `${sanitizedFirstWord}_${timestamp}`; // Create a unique key
+
+    const tweetRef = ref(db, 'tweets/' + tweetId);
+
+    set(tweetRef, {
         username: username,
         text: text,
-        date: Date.now(),
+        date: timestamp,
         likes: 0,
         hearts: 0
     });
 }
 
+
 // Middleware to serve static files
 app.use(express.static(path.join(__dirname, filePath)));
 
-app.listen(4213, () => {
-    console.log('Server is running on port http://localhost:4213');
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, filePath, 'index.html'));
+});
+
+
+app.get('/messages', (req, res) => {
+    res.sendFile(path.join(__dirname, filePath, 'messages.html'));
+});
+
+app.listen(5000, () => {
+    console.log('Server is running on port http://localhost:5000');
 });
