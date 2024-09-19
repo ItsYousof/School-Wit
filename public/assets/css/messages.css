@@ -62,27 +62,29 @@
 
 .main-messages {
     overflow-y: scroll;
+    margin-bottom: 50px; /* This creates space for the input bar */
 }
 
 .main-messages::-webkit-scrollbar {
     display: none;
 }
 
-
 #messagesContainer {
-    overflow-y: scroll;
-    height: 100vh;
+    height: calc(100vh - 70px); /* Deduct the input height and padding from the total height */
+    overflow-y: auto;
     padding: 20px;
 }
 
 .main-messages input {
-    width: 40%;
+    width: 100%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #E1E8ED;
     border-radius: 5px;
     position: fixed;
     bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .main-messages input:read-only {
