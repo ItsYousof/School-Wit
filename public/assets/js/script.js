@@ -88,7 +88,7 @@ document.getElementById('postTweetBtn').addEventListener('click', () => {
     document.getElementById('tweetInput').readOnly = true;
     setTimeout(() => {
         document.getElementById('tweetInput').readOnly = false;
-    }, 5000);
+    }, 60000);
 });
 
 async function loadTweets() {
