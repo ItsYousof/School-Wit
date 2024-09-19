@@ -70,7 +70,7 @@
 }
 
 #messagesContainer {
-    height: calc(100vh - 140px); /* Deduct the input height and padding from the total height */
+    height: calc(100vh - 120px); /* Deduct the input height and padding from the total height */
     overflow-y: auto;
     padding: 20px;
 }

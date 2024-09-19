@@ -17,6 +17,7 @@ if (localStorage.getItem('username') === null) {
 
 let selectedUser = null; // Keep track of the selected user
 const currentUser = localStorage.getItem('username'); // Get the current logged-in user's username
+let messageInterval = null; // Track the message loading interval
 
 document.addEventListener('DOMContentLoaded', () => {
     loadUsers();
@@ -41,34 +42,35 @@ function addSideUser(username) {
     let user = document.createElement('div');
     user.classList.add('user');
     user.innerHTML = `
-        <img class="user-avatar" src="assets/images/user-avater.png" alt="user avatar">
+        <img class="user-avatar" src="assets/images/user-avatar.png" alt="user avatar">
         <p>@${username}</p>
     `;
 
     document.getElementById('usersContainer').appendChild(user);
 
     user.addEventListener('click', () => { 
-        document.getElementById('user-name').innerHTML = `Messaging, @${username}`;
+        document.getElementById('user-name').innerHTML = `Messaging @${username}`;
+        
+        // Clear previous interval if any
+        if (messageInterval) {
+            clearInterval(messageInterval);
+        }
+        
         selectedUser = username;
-        loadMessages(currentUser, username); // Load messages between current user and 
+        loadMessages(currentUser, username); // Load messages between current user and selected user
 
         // Start interval to load messages every 5 seconds
-        setInterval(() => {
+        messageInterval = setInterval(() => {
             loadMessages(currentUser, username);
         }, 5000);
-
-        // If the user clicks on another user, stop the interval
-        if (selectedUser) {
-            clearInterval();
-        }
-
-        selectedUser = username;
     });
 }
+
 function scrollToBottom() {
     const messagesContainer = document.getElementById('messagesContainer');
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
+
 async function loadMessages(user1, user2) {
     try {
         const response = await fetch(`/messages/${user1}/${user2}`);
@@ -113,3 +115,15 @@ async function sendMessage() {
     loadMessages(sender, selectedUser); // Reload messages to include the new one
     scrollToBottom(); // Scroll to the bottom after sending a message
 }
+
+let searchInput = document.getElementById('userSearch');
+searchInput.addEventListener('input', () => {
+    let users = document.getElementsByClassName('user');
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].textContent.toLowerCase().includes(searchInput.value.toLowerCase())) {
+            users[i].style.display = 'flex';
+        } else {
+            users[i].style.display = 'none';
+        }
+    }
+});
