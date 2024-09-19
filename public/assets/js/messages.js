@@ -50,20 +50,29 @@ function addSideUser(username) {
     user.addEventListener('click', () => { 
         document.getElementById('user-name').innerHTML = `Messaging, @${username}`;
         selectedUser = username;
-        loadMessages(currentUser, username); // Load messages between current user and selected user
-            // Start interval to load messages every 5 seconds
-            setInterval(() => {
-                loadMessages(username);
-            }, 5000);
-    
-            // If the user clicks on another user, stop the interval
-            if (selectedUser) {
-                clearInterval();
-            }
-    
-            selectedUser = username;
+        loadMessages(currentUser, username); // Load messages between current user and 
+        startPolling(username);
+    });
+}
+
+function startPolling(otherUser) {
+    const user = localStorage.getItem('username');
+    const chatNames = [user, otherUser].sort().join('_');
+
+    setInterval(async () => {
+        const response = await fetch(`/messages/${chatNames}`);
+        const messages = await response.json();
         
-        })
+        const messagesContainer = document.getElementById('messagesContainer');
+        messagesContainer.innerHTML = '';
+
+        messages.forEach(message => {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.textContent = `${message.sender}: ${message.text}`;
+            messagesContainer.appendChild(messageElement);
+        });
+    }, 3000); // Poll every 3 seconds
 }
 async function loadMessages(user1, user2) {
     try {
