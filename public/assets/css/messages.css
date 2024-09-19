@@ -68,6 +68,13 @@
     display: none;
 }
 
+
+#messagesContainer {
+    overflow-y: scroll;
+    height: 100vh;
+    padding: 20px;
+}
+
 .main-messages input {
     width: 40%;
     padding: 10px;
