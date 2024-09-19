@@ -52,21 +52,11 @@ app.get('/users', async (req, res) => {
     res.json(users);
 });
 
-app.get('/messages/:chatNames', async (req, res) => {
-    const chatNames = req.params.chatNames;
-    const messagesRef = ref(db, `chats/${chatNames}`);
-    const snapshot = await get(messagesRef);
-    const messages = [];
-    snapshot.forEach((childSnapshot) => {
-        messages.push(childSnapshot.val());
-    });
-    res.json(messages); // Ensure this is the data structure you're expecting
-});
 
 app.post('/send_message', async (req, res) => {
     const { sender, recipient, text } = req.body;
     const chatNames = [sender, recipient].sort().join('_');
-    const messagesRef = ref(db, `chats/${chatNames}`);
+    const messagesRef = ref(db, `conversations/${chatNames}`);
     const newMessageRef = push(messagesRef);
     await set(newMessageRef, { sender, text, timestamp: Date.now() });
     res.sendStatus(200);

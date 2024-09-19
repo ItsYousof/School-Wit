@@ -65,7 +65,10 @@ function addSideUser(username) {
         selectedUser = username;
     });
 }
-
+function scrollToBottom() {
+    const messagesContainer = document.getElementById('messagesContainer');
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
 async function loadMessages(user1, user2) {
     try {
         const response = await fetch(`/messages/${user1}/${user2}`);
@@ -82,6 +85,8 @@ async function loadMessages(user1, user2) {
             messageElement.textContent = `${message.sender}: ${message.text}`;
             messagesContainer.appendChild(messageElement);
         }
+        
+        scrollToBottom(); // Scroll to the bottom after messages are loaded
     } catch (error) {
         console.error('Error loading messages:', error);
         // Handle errors such as showing a message to the user
@@ -106,4 +111,5 @@ async function sendMessage() {
     // Clear input field after sending
     messageInput.value = '';
     loadMessages(sender, selectedUser); // Reload messages to include the new one
+    scrollToBottom(); // Scroll to the bottom after sending a message
 }
