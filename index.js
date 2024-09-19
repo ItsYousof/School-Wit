@@ -52,31 +52,33 @@ app.get('/users', async (req, res) => {
     res.json(users);
 });
 
-// Store and load messages
 app.post('/send_message', (req, res) => {
     const { sender, recipient, text } = req.body;
-    sendMessageToUser(sender, recipient, text);
+    sendMessageToConversation(sender, recipient, text);
     res.sendStatus(200);
 });
 
-app.get('/messages/:username', async (req, res) => {
-    const username = req.params.username;
-    const messages = await loadMessages(username);
+app.get('/messages/:user1/:user2', async (req, res) => {
+    const { user1, user2 } = req.params;
+    const messages = await loadMessages(user1, user2);
     res.json(messages);
 });
 
-function sendMessageToUser(sender, recipient, text) {
-    const messagesRef = ref(db, `messages/${recipient}`);
+function sendMessageToConversation(user1, user2, text) {
+    // Create a conversation ID by sorting usernames to ensure uniqueness
+    const conversationId = [user1, user2].sort().join('_');
+    const messagesRef = ref(db, `conversations/${conversationId}`);
     const newMessageRef = push(messagesRef);
     set(newMessageRef, {
-        sender: sender,
+        sender: user1,
         text: text,
         timestamp: Date.now()
     });
 }
 
-async function loadMessages(username) {
-    const messagesRef = ref(db, `messages/${username}`);
+async function loadMessages(user1, user2) {
+    const conversationId = [user1, user2].sort().join('_');
+    const messagesRef = ref(db, `conversations/${conversationId}`);
     const snapshot = await get(messagesRef);
     const messages = [];
     snapshot.forEach((childSnapshot) => {
@@ -84,6 +86,7 @@ async function loadMessages(username) {
     });
     return messages;
 }
+
 
 
 async function loadUsers() {
