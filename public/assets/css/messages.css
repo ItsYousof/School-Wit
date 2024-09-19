@@ -99,3 +99,7 @@
     background: #a3e6ff;
     border-radius: 5px;
 }
+
+.bottom-spacer {
+    margin-top: 20vh;
+}

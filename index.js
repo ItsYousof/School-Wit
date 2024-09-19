@@ -60,7 +60,7 @@ app.get('/messages/:chatNames', async (req, res) => {
     snapshot.forEach((childSnapshot) => {
         messages.push(childSnapshot.val());
     });
-    res.json(messages);
+    res.json(messages); // Ensure this is the data structure you're expecting
 });
 
 app.post('/send_message', async (req, res) => {
