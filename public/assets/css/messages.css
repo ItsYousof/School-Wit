@@ -76,15 +76,13 @@
 }
 
 .main-messages input {
-    width: 100%;
+    width: 40%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #E1E8ED;
     border-radius: 5px;
     position: fixed;
     bottom: 0;
-    left: 0;
-    right: 0;
 }
 
 .main-messages input:read-only {
