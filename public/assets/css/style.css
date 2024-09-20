@@ -3,7 +3,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
-    overflow-y: hidden;
 }
 
 body {
@@ -248,7 +247,6 @@ input[type="text"] {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
     padding: 20px;
 }
 
