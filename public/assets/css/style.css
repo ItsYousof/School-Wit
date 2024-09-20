@@ -12,7 +12,6 @@ body {
             rgba(0, 212, 255, 1) 100%);
     backdrop-filter: blur(10px);
     min-height: 100vh;
-
 }
 
 .side-bar {
@@ -49,11 +48,18 @@ body {
     width: 100%;
 }
 
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
 .side-bar .menu ul li {
     width: 90%;
     margin-bottom: 20px;
 }
-
 
 .side-bar .menu ul li a {
     display: flex;
@@ -67,10 +73,7 @@ body {
     transition: background-color 0.3s;
 }
 
-.side-bar .menu ul li a.active {
-    background-color: rgba(29, 161, 242, 0.1);
-}
-
+.side-bar .menu ul li a.active,
 .side-bar .menu ul li a:hover {
     background-color: rgba(29, 161, 242, 0.1);
 }
@@ -112,6 +115,7 @@ body {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s;
 
     &:hover {
         background-color: rgba(29, 161, 242, 0.8);
@@ -121,7 +125,6 @@ body {
         background-color: rgba(29, 161, 242, 1);
     }
 }
-
 
 .main-content {
     margin-left: 280px;
@@ -137,29 +140,19 @@ body {
         display: none;
     }
 }
+
 .post-box {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    position: fixed;
-    left: 60em;
-    margin-bottom: 20px; 
-    margin-top: 20px;
+    margin: 20px 0;
     padding: 20px;
     border: 1px solid #E1E8ED;
     backdrop-filter: blur(10px);
     background-color: #F5F5F5;
-    width: 50vh;
+    width: 100%;
     border-radius: 5px;
-
-    input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #E1E8ED;
-        border-radius: 5px;
-    }
 
     .actions {
         display: flex;
@@ -177,8 +170,6 @@ body {
     .actions button:active {
         background-color: rgba(29, 161, 242, 1);
     }
-
-   
 }
 
 .first-tweet-spacer {
@@ -252,54 +243,48 @@ body {
     color: red;
 }
 
+.tweet-stuff {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 20px;
+}
+
 @media (max-width: 1366px) {
     .side-bar {
-        width: 250px; /* Adjust sidebar width */
+        width: 260px;
+    }
+
+    .side-bar .logo img {
+        width: 120px;
     }
 
     .main-content {
-        margin-left: 250px; /* Match main content to sidebar width */
-    }
-
-    .post-box {
-        left: 50%; /* Center post box */
-        transform: translateX(-50%); /* Centering effect */
-        width: 80vw; /* Responsive width */
-    }
-
-    .main-content, .side-bar {
-        padding: 15px; /* Adjust padding for smaller screens */
+        margin-left: 250px;
+        padding: 15px;
     }
 
     .side-bar .menu ul li {
-        margin-bottom: 15px; /* Adjust spacing */
+        margin-bottom: 15px;
     }
 
     .btn {
-        width: 90%; /* Make buttons more responsive */
+        width: 90%;
     }
 }
 
 @media (max-width: 1024px) {
     .side-bar {
-        width: 200px; /* Further reduce sidebar width */
-    }
-
-    .main-content {
-        margin-left: 200px; /* Match main content to new sidebar width */
-    }
-
-    .post-box {
-        width: 90vw; /* Wider for smaller screens */
-        padding: 15px; /* Adjust padding */
+        width: 200px;
     }
 
     .tweet {
-        min-width: 100%; /* Full width for tweets */
-        padding: 15px; /* Adjust padding */
+        min-width: 100%;
+        padding: 15px;
     }
 
     .tweet-mains h3 {
-        font-size: 14px; /* Slightly smaller font */
+        font-size: 14px;
     }
 }
