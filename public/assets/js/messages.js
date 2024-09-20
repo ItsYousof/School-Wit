@@ -42,7 +42,7 @@ function addSideUser(username) {
     let user = document.createElement('div');
     user.classList.add('user');
     user.innerHTML = `
-        <img class="user-avatar" src="../assets/images/user-avatar.png" alt="user avatar">
+        <img class="user-avatar" src="./assets/images/user-avatar.png" alt="user avatar">
         <p>@${username}</p>
     `;
 

@@ -103,3 +103,42 @@
 .bottom-spacer {
     margin-top: 20vh;
 }
+
+@media (max-width: 1366px) {
+    .main-sides {
+        flex-direction: column; /* Stack sides on smaller screens */
+    }
+
+    .left-side {
+        width: 100%; /* Full width */
+        margin-right: 0; /* Remove margin */
+    }
+
+    .right-side {
+        width: 100%; /* Full width */
+        margin-top: 20px; /* Add spacing between sections */
+    }
+
+    .main-messages input {
+        width: 80%; /* Wider input for better usability */
+        bottom: 10px; /* Adjust positioning */
+    }
+
+    #messagesContainer {
+        height: calc(100vh - 150px); /* Adjust height for input */
+    }
+}
+
+@media (max-width: 1024px) {
+    .main-sides {
+        padding: 10px; /* Add padding for smaller screens */
+    }
+
+    .main-messages {
+        margin-bottom: 30px; /* More space for the input */
+    }
+
+    .main-messages input {
+        width: 100%; /* Full width on very small screens */
+    }
+}
