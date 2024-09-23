@@ -11,9 +11,9 @@ body {
             rgb(141, 237, 234) 35%,
             rgba(0, 212, 255, 1) 100%);
     backdrop-filter: blur(10px);
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
-
 .side-bar {
     position: fixed;
     left: 0;
@@ -26,7 +26,6 @@ body {
     border-right: 1px solid #E1E8ED;
     padding: 20px 0;
 }
-
 .side-bar .logo {
     display: flex;
     justify-content: center;
@@ -125,22 +124,13 @@ input[type="text"] {
         background-color: rgba(29, 161, 242, 1);
     }
 }
-
 .main-content {
     margin-left: 280px;
     padding: 20px;
-    height: 100vh;
+    height: calc(100vh - 1px);
+    /* Adjust height */
     background-color: #F5F5F5;
-
-    &::-webkit-scrollbar-track {
-        background-color: #F5F5F5;
-    }
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
 }
-
 .post-box {
     display: flex;
     flex-direction: row;
@@ -175,13 +165,21 @@ input[type="text"] {
 .first-tweet-spacer {
     height: 130px;
 }
-
 #tweetsContainer {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    height: calc(100vh - 100px);
+    /* Adjust height for the tweet container */
+    overflow-y: auto;
+
+    /* Allow scrolling for tweets */
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: #F5F5F5;
+    }
 }
 
 #tweetsContainer::-webkit-scrollbar {

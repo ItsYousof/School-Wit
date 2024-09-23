@@ -128,28 +128,113 @@ function addUser(username) {
     // Naming the user in the database and setting the ref to it too
     const newUserRef = push(usersRef);
     set(newUserRef, {
-        username: username
+        username: username,
+        nitro: false
     });
 }
 
+
+// Add nitro value to all users 
+
+function addNitroToAllUsers() {
+    const usersRef = ref(db, 'users');
+    get(usersRef).then((snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+            const user = childSnapshot.val();
+            const newUserRef = childSnapshot.ref;
+            set(newUserRef, {
+                username: user.username,
+                nitro: false
+            });
+        });
+    });
+}
 
 function postTweet(username, text) {
-    // Get the first word of the tweet
     const firstWord = text.split(' ')[0];
-    const sanitizedFirstWord = firstWord.replace(/[^a-zA-Z0-9]/g, ''); // Remove special characters
-    const timestamp = Date.now(); // To ensure uniqueness
-    const tweetId = `${sanitizedFirstWord}_${timestamp}`; // Create a unique key
+    const sanitizedFirstWord = firstWord.replace(/[^a-zA-Z0-9]/g, '');
+    const timestamp = Date.now();
+    const tweetId = `${sanitizedFirstWord}_${timestamp}`;
 
-    const tweetRef = ref(db, 'tweets/' + tweetId);
+    // Count words in the tweet
+    const wordCount = text.split(' ').length;
 
-    set(tweetRef, {
-        username: username,
-        text: text,
-        date: timestamp,
-        likes: 0,
-        hearts: 0
-    });
+    // Define an array of bad words
+    const badWords = ['ass', 'bitch', 'fuck', 'shit', 'nigger', 'nigga', 'cunt', 'diddy', 'dick']; // Add your bad words here
+
+    // Replace bad words with '*'
+    const sanitizedText = badWords.reduce((currentText, badWord) => {
+        const regex = new RegExp(`\\b${badWord}\\b`, 'gi');
+        return currentText.replace(regex, '*');
+    }, text);
+
+    const userRef = ref(db, 'users/' + username);
+
+    // Check if the user has nitro
+    get(userRef)
+        .then((snapshot) => {
+            const user = snapshot.val();
+            if (user && user.nitro) {
+                // If user has nitro, allow more than 15 words
+                if (wordCount > 15) {
+                    alert("You can exceed the word limit since you have Nitro!");
+                }
+
+                // Post the tweet regardless of the word count
+                const tweetRef = ref(db, 'tweets/' + tweetId);
+                return set(tweetRef, {
+                    username: username,
+                    text: sanitizedText,
+                    date: timestamp,
+                    likes: 0,
+                    hearts: 0
+                });
+            } else {
+                // For users without nitro, check word limit
+                if (wordCount > 15) {
+                    alert("Your tweet exceeds the 15-word limit!");
+                    return; // Stop execution
+                }
+
+                // Post the tweet with the sanitized text
+                const tweetRef = ref(db, 'tweets/' + tweetId);
+                return set(tweetRef, {
+                    username: username,
+                    text: sanitizedText,
+                    date: timestamp,
+                    likes: 0,
+                    hearts: 0
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Error fetching user data: ", error);
+        });
 }
+ 
+app.get('/get_user_rank', (req, res) => {
+    const username = req.query.username; // Get the username from query parameters
+
+    const userdb = ref(db, 'users/' + username);
+    get(userdb).then((snapshot) => {
+        const user = snapshot.val();
+        if (user && user.nitro == true) {
+            res.send({ rank: true });
+        } else {
+            if (user && user.nitro == false) { 
+                res.send({ rank: false });
+            }
+        }
+    })
+});
+
+async function getUserRank(username) { // Changed 'user' to 'username' for clarity
+    const userRef = ref(db, 'users/' + username);
+    const snapshot = await get(userRef);
+    const user = snapshot.val();
+    return user && user.nitro === true; // Return true if nitro is true
+}
+
 
 
 // Middleware to serve static files
